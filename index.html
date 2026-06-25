@@ -291,7 +291,7 @@
 
     .dash-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
         gap: 10px;
         overflow: hidden;
     }
@@ -304,6 +304,7 @@
         text-align: center;
         transition: 0.2s;
         overflow: hidden;
+        min-width: 0;
     }
     .dash-item:hover {
         transform: translateY(-2px);
@@ -311,52 +312,53 @@
     }
 
     .dash-item p {
-        font-size: 0.8rem;
+        font-size: 0.75rem;
         font-weight: 600;
         color: #1e3b57;
         margin-bottom: 6px;
+        white-space: nowrap;
     }
 
     .dash-item .value {
         display: flex;
         justify-content: center;
         align-items: center;
-        gap: 14px;
+        gap: 8px;
         font-weight: 700;
-        font-size: 1.1rem;
+        font-size: 0.95rem;
         color: #0b2b4a;
         flex-wrap: nowrap;
     }
     .dash-item .value .dash-morning {
         display: inline-flex;
         align-items: center;
-        gap: 6px;
+        gap: 4px;
         background: #e8f5ed;
-        padding: 4px 14px;
-        border-radius: 30px;
+        padding: 4px 12px;
+        border-radius: 25px;
         color: #0e5c2e;
-        font-size: 1rem;
+        font-size: 0.85rem;
         border: 1px solid #b7dcc4;
         white-space: nowrap;
     }
     .dash-item .value .dash-evening {
         display: inline-flex;
         align-items: center;
-        gap: 6px;
+        gap: 4px;
         background: #e8f0fa;
-        padding: 4px 14px;
-        border-radius: 30px;
+        padding: 4px 12px;
+        border-radius: 25px;
         color: #004085;
-        font-size: 1rem;
+        font-size: 0.85rem;
         border: 1px solid #b8d0e8;
         white-space: nowrap;
     }
     .dash-item .value .dash-icon {
-        font-size: 1.4rem;
+        font-size: 0.9rem;
         line-height: 1;
     }
     .dash-item .value .dash-number {
-        font-size: 1.2rem;
+        font-size: 0.95rem;
         font-weight: 800;
     }
 
@@ -416,15 +418,15 @@
         .tab-btn { font-size: 0.7rem; padding: 4px 10px; }
         .print-btn { font-size: 0.7rem; padding: 4px 10px; }
         .week-badge { font-size: 0.7rem; padding: 3px 10px; }
-        .dashboard { padding: 10px 12px; }
-        .dashboard h3 { font-size: 0.9rem; }
+        .dashboard { padding: 8px 10px; }
+        .dashboard h3 { font-size: 0.85rem; margin-bottom: 8px; }
         .dash-grid { 
             grid-template-columns: repeat(4, 1fr);
             gap: 4px;
         }
         .dash-item { 
             padding: 4px 2px;
-            overflow: hidden;
+            border-radius: 10px;
         }
         .dash-item p { 
             font-size: 0.5rem; 
@@ -433,13 +435,13 @@
         }
         .dash-item .value { 
             gap: 2px; 
-            font-size: 0.65rem;
+            font-size: 0.6rem;
             flex-wrap: nowrap;
             justify-content: center;
         }
         .dash-item .value .dash-morning,
         .dash-item .value .dash-evening { 
-            padding: 1px 4px; 
+            padding: 2px 5px; 
             font-size: 0.5rem;
             border-radius: 12px;
             gap: 2px;
@@ -811,13 +813,13 @@
 
         html += '<div class="dash-item" style="background:#f0f7fc;border-color:#cde4e7;">' +
             '<p>📌 مجموع FULL</p>' +
-            '<div class="value" style="font-size:1.3rem;color:#8a5d00;">' + totalFull + '</div></div>' +
+            '<div class="value" style="font-size:1.2rem;color:#8a5d00;">' + totalFull + '</div></div>' +
             '<div class="dash-item" style="background:#f0f7fc;border-color:#cde4e7;">' +
             '<p>📌 مجموع OFF</p>' +
-            '<div class="value" style="font-size:1.3rem;color:#9e1f2b;">' + totalOff + '</div></div>' +
+            '<div class="value" style="font-size:1.2rem;color:#9e1f2b;">' + totalOff + '</div></div>' +
             '<div class="dash-item" style="background:#f0f7fc;border-color:#cde4e7;">' +
             '<p>🧾 الگو</p>' +
-            '<div class="value" style="font-size:1.3rem;color:#008a99;">' + patternName + '</div></div>';
+            '<div class="value" style="font-size:1.2rem;color:#008a99;">' + patternName + '</div></div>';
 
         dashContainer.innerHTML = html;
     }
