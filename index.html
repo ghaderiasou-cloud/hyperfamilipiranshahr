@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>برنامه شیفت فروشگاه | Piranshahr</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+        font-family: 'Vazirmatn', 'Segoe UI', Tahoma, sans-serif;
+        background: linear-gradient(135deg, #e8f0f2 0%, #d4e1e6 100%);
+        margin: 0;
+        padding: 6px 8px;
+        color: #1e3a3f;
+        min-height: 100vh;
+    }
+    .container { max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
+    
+    .brand-row {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        flex-wrap: nowrap;
+        background: rgba(255,255,255,0.96);
+        border-radius: 20px;
+        padding: 6px 12px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+        border: 1px solid rgba(0,177,195,0.15);
+    }
+    .piranshahr-text {
+        font-family: 'Poppins', sans-serif;
+        font-weight: 800;
+        font-size: 1.4rem;
+        letter-spacing: 1px;
+        white-space: nowrap;
+    }
+    .piranshahr-text .red { color: #c0392b; }
+    .piranshahr-text .teal { color: #008a99; }
+    .hyper-text {
+        font-family: 'Poppins', sans-serif;
+        font-weight: 700;
+        font-size: 1rem;
+        background: linear-gradient(135deg, #c0392b, #008a99);
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent;
+        letter-spacing: 0.5px;
+        white-space: nowrap;
+    }
+    .logo-placeholder { display: flex; align-items: center; justify-content: center; height: 36px; }
+    .logo-placeholder img { max-height: 100%; width: auto; object-fit: contain; display: block; }
+
+    .weekly-section {
+        background: rgba(255,255,255,0.96);
+        border-radius: 20px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+        padding: 12px 14px;
+        border: 1px solid rgba(0,177,195,0.15);
+    }
+
+    .toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+        gap: 8px;
+    }
+
+    .tabs {
+        display: flex;
+        gap: 6px;
+    }
+
+    .tab-btn {
+        background: #f0f7f8;
+        border: none;
+        padding: 5px 14px;
+        border-radius: 40px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: #008a99;
+        cursor: pointer;
+        transition: all 0.2s;
+        border: 1px solid #cde4e7;
+    }
+
+    .tab-btn.active {
+        background: #c0392b;
+        color: white;
+        border: none;
+    }
+
+    .tab-btn:hover {
+        background: #008a99;
+        color: white;
+        transform: translateY(-1px);
+    }
+
+    .print-btn {
+        background: #008a99;
+        color: white;
+        padding: 5px 14px;
+        border-radius: 40px;
+        border: none;
+        font-weight: 600;
+        font-size: 0.8rem;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    .print-btn:hover {
+        transform: translateY(-1px);
+        filter: brightness(0.96);
+    }
+
+    .week-badge {
+        background: #eef7f9;
+        padding: 4px 12px;
+        border-radius: 30px;
+        font-weight: 500;
+        font-size: 0.8rem;
+        color: #008a99;
+    }
+
+    .section-selector {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin: 6px 0 10px;
+        padding: 8px 12px;
+        background: #f8faff;
+        border-radius: 20px;
+        border: 1px solid #cde4e7;
+        align-items: center;
+    }
+
+    .section-selector label {
+        font-weight: 600;
+        font-size: 0.85rem;
+        color: #0a2740;
+        margin-left: 6px;
+    }
+
+    .section-selector select {
+        padding: 4px 12px;
+        border-radius: 40px;
+        border: 1px solid #cde4e7;
+        background: white;
+        font-family: 'Vazirmatn', sans-serif;
+        font-size: 0.85rem;
+        color: #1f3a57;
+        cursor: pointer;
+        outline: none;
+        min-width: 120px;
+    }
+
+    .section-selector select:focus {
+        border-color: #008a99;
+        box-shadow: 0 0 0 3px rgba(0, 177, 195, 0.12);
+    }
+
+    .shift-table-wrapper {
+        background: white;
+        border-radius: 16px;
+        padding: 10px 8px 12px;
+        overflow-x: auto;
+        margin-top: 6px;
+        border: 1px solid #e8f0f2;
+    }
+
+    .shift-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.75rem;
+        min-width: 0;
+    }
+
+    .shift-table th {
+        background: #008a99;
+        color: white;
+        font-weight: 700;
+        padding: 6px 4px;
+        border: 1px solid #cde4e7;
+        text-align: center;
+        font-size: 0.7rem;
+    }
+
+    .shift-table td {
+        padding: 5px 3px;
+        border: 1px solid #cde4e7;
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .shift-table .day-col {
+        font-weight: 700;
+        color: #0a2740;
+        background: #f6faff;
+        text-align: center;
+        min-width: 40px;
+        font-size: 0.7rem;
+    }
+
+    .shift-table .person-header {
+        font-weight: 700;
+        text-align: center;
+        padding: 6px 3px;
+        font-size: 0.65rem;
+        background: #eef7f9;
+        border: 1px solid #cde4e7;
+    }
+    .shift-table .person-header.color-0 { color: #c0392b; }
+    .shift-table .person-header.color-1 { color: #1e8449; }
+    .shift-table .person-header.color-2 { color: #b9770e; }
+    .shift-table .person-header.color-3 { color: #6c3483; }
+    .shift-table .person-header.color-4 { color: #1a5276; }
+    .shift-table .person-header.color-5 { color: #c0392b; }
+    .shift-table .person-header.color-6 { color: #1e8449; }
+
+    .shift-table .shift-cell {
+        border-radius: 8px;
+        padding: 3px 2px;
+        font-weight: 700;
+        font-size: 0.65rem;
+        display: inline-block;
+        min-width: 32px;
+        text-align: center;
+    }
+
+    .shift-table .shift-morning { background: #d4edda; color: #0e5c2e; }
+    .shift-table .shift-evening { background: #cce5ff; color: #004085; }
+    .shift-table .shift-full { background: #ffe5b4; color: #8a5d00; }
+    .shift-table .shift-off { background: #f8d7da; color: #9e1f2b; }
+
+    .shift-table .stats-cell {
+        background: #f0f7fc;
+        border-radius: 12px;
+        padding: 4px 6px;
+        display: inline-block;
+        min-width: 60px;
+        text-align: center;
+    }
+    .shift-table .stats-cell .stat-row {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 6px;
+    }
+    .shift-table .stats-cell .stat-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 3px;
+        font-size: 0.65rem;
+        font-weight: 700;
+        padding: 2px 8px;
+        border-radius: 20px;
+        background: white;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    .shift-table .stats-cell .stat-badge.morning {
+        color: #0e5c2e;
+        border: 1px solid #b7dcc4;
+    }
+    .shift-table .stats-cell .stat-badge.evening {
+        color: #004085;
+        border: 1px solid #b8d0e8;
+    }
+    .shift-table .stats-cell .stat-icon {
+        font-size: 0.75rem;
+    }
+
+    .dashboard {
+        background: rgba(255,255,255,0.96);
+        border-radius: 20px;
+        padding: 14px 16px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+        border: 1px solid rgba(0,177,195,0.15);
+        overflow: hidden;
+    }
+
+    .dashboard h3 {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #0a2740;
+        margin-bottom: 12px;
+    }
+
+    .dash-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+        gap: 10px;
+        overflow: hidden;
+    }
+
+    .dash-item {
+        background: #f8faff;
+        border-radius: 14px;
+        padding: 10px 12px;
+        border: 1px solid #e8f0f2;
+        text-align: center;
+        transition: 0.2s;
+        overflow: hidden;
+    }
+    .dash-item:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    }
+
+    .dash-item p {
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: #1e3b57;
+        margin-bottom: 6px;
+    }
+
+    .dash-item .value {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 14px;
+        font-weight: 700;
+        font-size: 1.1rem;
+        color: #0b2b4a;
+        flex-wrap: nowrap;
+    }
+    .dash-item .value .dash-morning {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: #e8f5ed;
+        padding: 4px 14px;
+        border-radius: 30px;
+        color: #0e5c2e;
+        font-size: 1rem;
+        border: 1px solid #b7dcc4;
+        white-space: nowrap;
+    }
+    .dash-item .value .dash-evening {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: #e8f0fa;
+        padding: 4px 14px;
+        border-radius: 30px;
+        color: #004085;
+        font-size: 1rem;
+        border: 1px solid #b8d0e8;
+        white-space: nowrap;
+    }
+    .dash-item .value .dash-icon {
+        font-size: 1.4rem;
+        line-height: 1;
+    }
+    .dash-item .value .dash-number {
+        font-size: 1.2rem;
+        font-weight: 800;
+    }
+
+    .footer-note {
+        font-size: 0.7rem;
+        color: #5a738b;
+        margin: 10px 0 6px;
+        text-align: center;
+        direction: ltr;
+    }
+    .footer-note .email {
+        direction: ltr;
+        display: inline-block;
+        unicode-bidi: embed;
+    }
+
+    .tab-content {
+        display: none;
+    }
+
+    .tab-content.active {
+        display: block;
+    }
+
+    @media print {
+        body { background: white; padding: 5px; }
+        .container { max-width: 100%; }
+        .toolbar .print-btn { display: none; }
+        .shift-table-wrapper { border: 1px solid #aaa; }
+        .dashboard { border: 1px solid #aaa; }
+        .tab-btn { display: none; }
+        .tab-content { display: block !important; }
+        .week-badge { background: #eee; }
+        .section-selector { border: 1px solid #aaa; }
+        .brand-row { border: 1px solid #aaa; }
+    }
+
+    @media (max-width: 600px) {
+        .shift-table { font-size: 0.6rem; }
+        .shift-table .shift-cell { min-width: 24px; font-size: 0.55rem; padding: 2px 1px; }
+        .shift-table th { font-size: 0.6rem; padding: 4px 2px; }
+        .shift-table td { padding: 3px 2px; }
+        .shift-table .day-col { font-size: 0.6rem; min-width: 30px; }
+        .shift-table .person-header { font-size: 0.55rem; padding: 4px 2px; }
+        .shift-table .stats-cell { min-width: 45px; padding: 3px 4px; }
+        .shift-table .stats-cell .stat-badge { font-size: 0.55rem; padding: 1px 5px; }
+        .shift-table .stats-cell .stat-icon { font-size: 0.6rem; }
+        .piranshahr-text { font-size: 1.1rem; }
+        .hyper-text { font-size: 0.7rem; }
+        .brand-row { gap: 4px; padding: 4px 8px; }
+        .logo-placeholder { height: 28px; }
+        .logo-placeholder img { max-height: 28px; }
+        .weekly-section { padding: 8px 10px; }
+        .section-selector { padding: 6px 10px; }
+        .section-selector select { font-size: 0.75rem; min-width: 100px; padding: 3px 8px; }
+        .section-selector label { font-size: 0.75rem; }
+        .tab-btn { font-size: 0.7rem; padding: 4px 10px; }
+        .print-btn { font-size: 0.7rem; padding: 4px 10px; }
+        .week-badge { font-size: 0.7rem; padding: 3px 10px; }
+        .dashboard { padding: 10px 12px; }
+        .dashboard h3 { font-size: 0.9rem; }
+        .dash-grid { 
+            grid-template-columns: repeat(4, 1fr);
+            gap: 4px;
+        }
+        .dash-item { 
+            padding: 4px 2px;
+            overflow: hidden;
+        }
+        .dash-item p { 
+            font-size: 0.5rem; 
+            margin-bottom: 2px;
+            white-space: nowrap;
+        }
+        .dash-item .value { 
+            gap: 2px; 
+            font-size: 0.65rem;
+            flex-wrap: nowrap;
+            justify-content: center;
+        }
+        .dash-item .value .dash-morning,
+        .dash-item .value .dash-evening { 
+            padding: 1px 4px; 
+            font-size: 0.5rem;
+            border-radius: 12px;
+            gap: 2px;
+        }
+        .dash-item .value .dash-icon { 
+            font-size: 0.5rem; 
+        }
+        .dash-item .value .dash-number { 
+            font-size: 0.55rem;
+        }
+    }
+</style>
+</head>
+<body>
+<div class="container" id="appContainer">
+    <div class="brand-row">
+        <div class="piranshahr-text">
+            <span class="red">Piran</span><span class="teal">shahr</span>
+        </div>
+        <div class="logo-placeholder">
+            <img alt="logo" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 36 36'%3E%3Crect width='36' height='36' rx='8' fill='%23c0392b'/%3E%3Ctext x='18' y='25' font-family='Poppins' font-size='18' font-weight='800' fill='white' text-anchor='middle'%3EP%3C/text%3E%3C/svg%3E">
+        </div>
+        <div class="hyper-text">Hyper Famili</div>
+    </div>
+
+    <div class="weekly-section">
+        <div class="toolbar">
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="tabA">هفته A</button>
+                <button class="tab-btn" data-tab="tabB">هفته B</button>
+            </div>
+            <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap;">
+                <span class="week-badge" id="weekDisplay">هفته اول · هفته A</span>
+                <button class="print-btn" onclick="window.print()">🖨️ چاپ</button>
+            </div>
+        </div>
+
+        <div class="section-selector">
+            <label for="sectionSelect">📂 سکشن:</label>
+            <select id="sectionSelect"></select>
+        </div>
+
+        <div id="tabA" class="tab-content active"></div>
+        <div id="tabB" class="tab-content"></div>
+    </div>
+
+    <div class="dashboard" id="dashboardContainer">
+        <h3>📊 داشبورد آماری (الگوی فعال)</h3>
+        <div id="dashContent" class="dash-grid"></div>
+    </div>
+    <div class="footer-note">
+        برنامه شیفت فروشگاه هایپر فامیلی پیرانشهر
+        <span class="email">Dr.asoghaderi@gmail.com</span>
+    </div>
+</div>
+
+<!-- پاپ‌آپ شیفت -->
+<div id="shiftModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);justify-content:center;align-items:center;z-index:9999;">
+    <div style="background:#fff;width:90%;max-width:400px;border-radius:16px;padding:20px;text-align:right;">
+        <h3 id="modalTitle" style="font-size:16px;"></h3>
+        <div id="modalContent" style="line-height:2;margin:15px 0;"></div>
+        <button onclick="closeShiftModal()" style="background:#008a99;color:#fff;border:none;padding:10px 20px;border-radius:8px;">بستن</button>
+    </div>
+</div>
+
+<script>
+    // ============================================================
+    // 1. توابع کمکی
+    // ============================================================
+    function formatPerson(person, section) {
+        if (person === '—') return '—';
+        
+        // سکشن مدیریت
+        if (section === 'مدیریت') {
+            if (person === 'قادری') {
+                return 'دکتر قادری <span style="font-size:0.55rem;font-weight:600;color:#1e8449;margin-right:4px;white-space:nowrap;">(مدیریت)</span>';
+            }
+            if (person === 'حمزه') {
+                return 'مهندس حمزه <span style="font-size:0.5rem;font-weight:600;color:#1e8449;margin-right:4px;white-space:nowrap;">(مسئول سالن)</span>';
+            }
+        }
+        
+        // سکشن حراست و سالن
+        if (section === 'حراست و سالن') {
+            if (person === 'آقای سعادتنیا') {
+                return 'آقای سعادتنیا <span style="font-size:0.6rem;font-weight:600;color:#1e8449;margin-right:4px;white-space:nowrap;">(حراست)</span>';
+            }
+            if (person === 'آقای صحرایی') {
+                return 'آقای صحرایی <span style="font-size:0.5rem;font-weight:600;color:#1e8449;margin-right:4px;white-space:nowrap;">(پرسنل سالن)</span>';
+            }
+        }
+        
+        return person + ' <span style="font-size:0.6rem;font-weight:600;color:#1e8449;margin-right:4px;white-space:nowrap;">(' + section + ')</span>';
+    }
+
+    // ============================================================
+    // 2. داده‌های اصلی
+    // ============================================================
+    var days = ['شنبه', 'یکشنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه', 'پنجشنبه', 'جمعه'];
+    var shiftMap = { 'صبح': 'morning', 'عصر': 'evening', 'FULL': 'full', 'OFF': 'off' };
+
+    var sections = {
+        'DRY': ['خانم دلدار قادری', 'خانم احمدی'],
+        'OPSS': ['خانم حسین‌زاده', '—'],
+        'Fresh': ['آقای خوارزمی', '—'],
+        'DPH': ['خانم بنفشه قادری', 'خانم ادریسی'],
+        'صندوق': ['خانم پیروتی', 'خانم امینی'],
+        'جزیره': ['خانم حمزه‌پور', 'خانم حاجی'],
+        'حراست و سالن': ['آقای سعادتنیا', 'آقای صحرایی'],
+        'انبار': ['آقای حسین‌پور', 'آقای یوسفی'],
+        'مدیریت': ['قادری', 'حمزه']
+    };
+
+    // سکشن‌هایی که تغییر می‌کنند (به جز انبار و مدیریت)
+    var changeableSections = ['DRY', 'OPSS', 'Fresh', 'DPH', 'صندوق', 'جزیره', 'حراست و سالن'];
+
+    // الگوهای اصلی (مرجع)
+    var originalPatternA = {
+        'خانم دلدار قادری': ['صبح','صبح','FULL','OFF','صبح','صبح','صبح'],
+        'خانم احمدی': ['عصر','عصر','OFF','FULL','عصر','عصر','عصر'],
+        'خانم حسین‌زاده': ['صبح','صبح','FULL','OFF','صبح','صبح','صبح'],
+        '—': ['عصر','عصر','OFF','FULL','عصر','عصر','عصر'],
+        'آقای خوارزمی': ['صبح','OFF','صبح','صبح','صبح','FULL','صبح'],
+        'خانم بنفشه قادری': ['صبح','صبح','FULL','OFF','صبح','صبح','صبح'],
+        'خانم ادریسی': ['عصر','عصر','OFF','FULL','عصر','عصر','عصر'],
+        'خانم پیروتی': ['صبح','صبح','FULL','OFF','صبح','صبح','صبح'],
+        'خانم امینی': ['عصر','عصر','OFF','FULL','عصر','عصر','عصر'],
+        'خانم حمزه‌پور': ['صبح','صبح','FULL','OFF','صبح','صبح','صبح'],
+        'خانم حاجی': ['عصر','عصر','OFF','FULL','عصر','عصر','عصر'],
+        'آقای سعادتنیا': ['صبح','صبح','FULL','OFF','صبح','صبح','صبح'],
+        'آقای صحرایی': ['عصر','عصر','OFF','FULL','عصر','عصر','عصر'],
+        'آقای حسین‌پور': ['FULL','صبح','صبح','صبح','صبح','صبح','OFF'],
+        'آقای یوسفی': ['صبح','صبح','صبح','صبح','صبح','FULL','OFF'],
+        // ===== سکشن مدیریت - هفته A =====
+        'قادری': ['صبح','صبح','عصر','FULL','صبح','OFF','عصر'],
+        'حمزه': ['عصر','عصر','صبح','OFF','عصر','FULL','صبح']
+    };
+
+    var originalPatternB = {
+        'خانم دلدار قادری': ['عصر','عصر','OFF','FULL','عصر','عصر','عصر'],
+        'خانم احمدی': ['صبح','صبح','FULL','OFF','صبح','صبح','صبح'],
+        'خانم حسین‌زاده': ['صبح','صبح','OFF','FULL','صبح','صبح','صبح'],
+        '—': ['عصر','عصر','FULL','OFF','عصر','عصر','عصر'],
+        'آقای خوارزمی': ['FULL','صبح','صبح','صبح','صبح','صبح','OFF'],
+        'خانم بنفشه قادری': ['صبح','صبح','OFF','FULL','صبح','صبح','صبح'],
+        'خانم ادریسی': ['عصر','عصر','FULL','OFF','عصر','عصر','عصر'],
+        'خانم پیروتی': ['عصر','عصر','OFF','FULL','عصر','عصر','عصر'],
+        'خانم امینی': ['صبح','صبح','FULL','OFF','صبح','صبح','صبح'],
+        'خانم حمزه‌پور': ['عصر','عصر','OFF','FULL','عصر','عصر','عصر'],
+        'خانم حاجی': ['صبح','صبح','FULL','OFF','صبح','صبح','صبح'],
+        'آقای سعادتنیا': ['عصر','عصر','OFF','FULL','عصر','عصر','عصر'],
+        'آقای صحرایی': ['صبح','صبح','FULL','OFF','صبح','صبح','صبح'],
+        'آقای حسین‌پور': ['صبح','صبح','صبح','صبح','صبح','FULL','OFF'],
+        'آقای یوسفی': ['FULL','صبح','صبح','صبح','صبح','صبح','OFF'],
+        // ===== سکشن مدیریت - هفته B =====
+        'قادری': ['عصر','عصر','FULL','صبح','OFF','عصر','صبح'],
+        'حمزه': ['صبح','صبح','OFF','عصر','FULL','صبح','عصر']
+    };
+
+    // ============================================================
+    // 3. تابع انتقال خودکار FULL و OFF
+    // ============================================================
+    function transferFullOffToFriSat(pattern) {
+        var newPattern = JSON.parse(JSON.stringify(pattern));
+        for (var person in newPattern) {
+            var isChangeable = false;
+            for (var s = 0; s < changeableSections.length; s++) {
+                var sec = changeableSections[s];
+                if (sections[sec] && sections[sec].indexOf(person) !== -1) {
+                    isChangeable = true;
+                    break;
+                }
+            }
+            if (!isChangeable) continue;
+
+            var shifts = newPattern[person];
+            
+            var mondayShift = shifts[2];
+            if (mondayShift === 'FULL' || mondayShift === 'OFF') {
+                if (shifts[6] === 'FULL' || shifts[6] === 'OFF') {
+                    var tempFri = shifts[6];
+                    shifts[6] = mondayShift;
+                    shifts[2] = tempFri;
+                } else {
+                    var tempFri2 = shifts[6];
+                    shifts[6] = mondayShift;
+                    shifts[2] = tempFri2;
+                }
+            }
+            
+            var tuesdayShift = shifts[3];
+            if (tuesdayShift === 'FULL' || tuesdayShift === 'OFF') {
+                if (shifts[0] === 'FULL' || shifts[0] === 'OFF') {
+                    var tempSat = shifts[0];
+                    shifts[0] = tuesdayShift;
+                    shifts[3] = tempSat;
+                } else {
+                    var tempSat2 = shifts[0];
+                    shifts[0] = tuesdayShift;
+                    shifts[3] = tempSat2;
+                }
+            }
+        }
+        return newPattern;
+    }
+
+    // ============================================================
+    // 4. اعمال خودکار انتقال در هنگام بارگذاری
+    // ============================================================
+    var patternA = transferFullOffToFriSat(originalPatternA);
+    var patternB = transferFullOffToFriSat(originalPatternB);
+    var isChanged = true;
+
+    // ============================================================
+    // 5. توابع رندر
+    // ============================================================
+    function renderVerticalTable(pattern, sectionName, containerId) {
+        var container = document.getElementById(containerId);
+        if (!container) return;
+        container.innerHTML = '';
+
+        var wrapper = document.createElement('div');
+        wrapper.className = 'shift-table-wrapper';
+
+        var table = document.createElement('table');
+        table.className = 'shift-table';
+
+        var persons = sections[sectionName] || [];
+        persons = persons.filter(function(p) { 
+            return p.trim() !== '' && p.trim() !== '—';
+        });
+
+        if (persons.length === 0) {
+            wrapper.innerHTML = '<p style="padding:12px;text-align:center;color:#5a738b;font-size:0.8rem;">هیچ پرسنلی در این سکشن وجود ندارد</p>';
+            container.appendChild(wrapper);
+            return;
+        }
+
+        var thead = document.createElement('thead');
+        var headerRow = document.createElement('tr');
+
+        var thDay = document.createElement('th');
+        thDay.textContent = 'روز';
+        thDay.style.minWidth = '40px';
+        headerRow.appendChild(thDay);
+
+        persons.forEach(function(person, index) {
+            var th = document.createElement('th');
+            th.className = 'person-header color-' + (index % 7);
+            th.innerHTML = formatPerson(person, sectionName);
+            headerRow.appendChild(th);
+        });
+
+        var thStats = document.createElement('th');
+        thStats.textContent = '📊 آمار';
+        thStats.style.minWidth = '50px';
+        headerRow.appendChild(thStats);
+
+        thead.appendChild(headerRow);
+        table.appendChild(thead);
+
+        var tbody = document.createElement('tbody');
+
+        for (var d = 0; d < 7; d++) {
+            var row = document.createElement('tr');
+
+            var dayCell = document.createElement('td');
+            dayCell.className = 'day-col';
+            dayCell.textContent = days[d];
+            row.appendChild(dayCell);
+
+            var morningCount = 0, eveningCount = 0;
+            for (var p = 0; p < persons.length; p++) {
+                var person = persons[p];
+                var shifts = pattern[person];
+                if (!shifts) {
+                    var cell = document.createElement('td');
+                    cell.textContent = '—';
+                    row.appendChild(cell);
+                    continue;
+                }
+                var shiftLabel = shifts[d] || 'OFF';
+                var shiftClass = shiftMap[shiftLabel] || 'off';
+
+                var cell = document.createElement('td');
+                var span = document.createElement('span');
+                span.className = 'shift-cell shift-' + shiftClass;
+                span.textContent = shiftLabel;
+                cell.appendChild(span);
+                row.appendChild(cell);
+
+                if (shiftLabel === 'FULL') { morningCount++; eveningCount++; }
+                else if (shiftLabel === 'صبح') morningCount++;
+                else if (shiftLabel === 'عصر') eveningCount++;
+            }
+
+            var statCell = document.createElement('td');
+            var statDiv = document.createElement('div');
+            statDiv.className = 'stats-cell';
+            statDiv.innerHTML = '<div class="stat-row">' +
+                '<span class="stat-badge morning" onclick="window.showShiftPopup(' + d + ',\'morning\')">' +
+                '<span class="stat-icon">☀️</span> ' + morningCount + '</span>' +
+                '<span class="stat-badge evening" onclick="window.showShiftPopup(' + d + ',\'evening\')">' +
+                '<span class="stat-icon">🌙</span> ' + eveningCount + '</span>' +
+                '</div>';
+            statCell.appendChild(statDiv);
+            row.appendChild(statCell);
+
+            tbody.appendChild(row);
+        }
+
+        table.appendChild(tbody);
+        wrapper.appendChild(table);
+        container.appendChild(wrapper);
+
+        updateDashboard(pattern, getPatternName(pattern));
+    }
+
+    function getPatternName(pattern) {
+        if (JSON.stringify(pattern) === JSON.stringify(patternA)) return 'A';
+        if (JSON.stringify(pattern) === JSON.stringify(patternB)) return 'B';
+        return 'C';
+    }
+
+    function updateDashboard(pattern, patternName) {
+        var dashContainer = document.getElementById('dashContent');
+        if (!dashContainer) return;
+
+        var dayStats = [];
+        for (var i = 0; i < 7; i++) {
+            dayStats.push({ morning: 0, evening: 0 });
+        }
+
+        for (var name in pattern) {
+            if (name === '—') continue;
+            var shifts = pattern[name];
+            for (var d = 0; d < 7; d++) {
+                var s = shifts[d] || 'OFF';
+                if (s === 'صبح') dayStats[d].morning++;
+                else if (s === 'عصر') dayStats[d].evening++;
+                else if (s === 'FULL') { dayStats[d].morning++; dayStats[d].evening++; }
+            }
+        }
+
+        var html = '';
+        for (var d2 = 0; d2 < 7; d2++) {
+            html += '<div class="dash-item">' +
+                '<p>' + days[d2] + '</p>' +
+                '<div class="value">' +
+                '<span class="dash-morning" onclick="window.showShiftPopup(' + d2 + ',\'morning\')" style="cursor:pointer;">' +
+                '<span class="dash-icon">☀️</span>' +
+                '<span class="dash-number">' + dayStats[d2].morning + '</span>' +
+                '</span>' +
+                '<span class="dash-evening" onclick="window.showShiftPopup(' + d2 + ',\'evening\')" style="cursor:pointer;">' +
+                '<span class="dash-icon">🌙</span>' +
+                '<span class="dash-number">' + dayStats[d2].evening + '</span>' +
+                '</span>' +
+                '</div></div>';
+        }
+
+        var totalFull = 0, totalOff = 0;
+        for (var name2 in pattern) {
+            if (name2 === '—') continue;
+            for (var s2 of pattern[name2]) {
+                if (s2 === 'FULL') totalFull++;
+                else if (s2 === 'OFF') totalOff++;
+            }
+        }
+
+        html += '<div class="dash-item" style="background:#f0f7fc;border-color:#cde4e7;">' +
+            '<p>📌 مجموع FULL</p>' +
+            '<div class="value" style="font-size:1.3rem;color:#8a5d00;">' + totalFull + '</div></div>' +
+            '<div class="dash-item" style="background:#f0f7fc;border-color:#cde4e7;">' +
+            '<p>📌 مجموع OFF</p>' +
+            '<div class="value" style="font-size:1.3rem;color:#9e1f2b;">' + totalOff + '</div></div>' +
+            '<div class="dash-item" style="background:#f0f7fc;border-color:#cde4e7;">' +
+            '<p>🧾 الگو</p>' +
+            '<div class="value" style="font-size:1.3rem;color:#008a99;">' + patternName + '</div></div>';
+
+        dashContainer.innerHTML = html;
+    }
+
+    // ============================================================
+    // 6. توابع پاپ‌آپ شیفت
+    // ============================================================
+    window.showShiftPopup = function(dayIndex, shiftType) {
+        var pattern = currentPattern || patternA;
+        var names = [];
+        for (var person in pattern) {
+            if (person === '—') continue;
+            var shift = pattern[person][dayIndex];
+            if (shiftType === 'morning') {
+                if (shift === 'صبح' || shift === 'FULL') {
+                    var sec = Object.keys(sections).find(function(s) { return sections[s].indexOf(person) !== -1; });
+                    names.push(formatPerson(person, sec));
+                }
+            }
+            if (shiftType === 'evening') {
+                if (shift === 'عصر' || shift === 'FULL') {
+                    var sec2 = Object.keys(sections).find(function(s) { return sections[s].indexOf(person) !== -1; });
+                    names.push(formatPerson(person, sec2));
+                }
+            }
+        }
+        var title = shiftType === 'morning' ? '☀️ پرسنل شیفت صبح ' + days[dayIndex] : '🌙 پرسنل شیفت عصر ' + days[dayIndex];
+        document.getElementById('modalTitle').innerText = title;
+        document.getElementById('modalContent').innerHTML = names.length ? names.join('<br>') : '<span style="color:#999;">هیچ کسی در این شیفت حضور ندارد</span>';
+        document.getElementById('shiftModal').style.display = 'flex';
+    };
+
+    window.closeShiftModal = function() {
+        document.getElementById('shiftModal').style.display = 'none';
+    };
+
+    // ============================================================
+    // 7. توابع اصلی برنامه
+    // ============================================================
+    function populateSectionSelect() {
+        var select = document.getElementById('sectionSelect');
+        select.innerHTML = '';
+        for (var sec in sections) {
+            var opt = document.createElement('option');
+            opt.value = sec;
+            opt.textContent = sec;
+            select.appendChild(opt);
+        }
+    }
+
+    var currentPattern = patternA;
+    var currentTab = 'tabA';
+
+    function renderCurrentView() {
+        var selectedSection = document.getElementById('sectionSelect').value;
+        var containerId = currentTab;
+        var pattern = containerId === 'tabA' ? patternA : patternB;
+        renderVerticalTable(pattern, selectedSection, containerId);
+        updateWeekDisplay();
+    }
+
+    function updateWeekDisplay() {
+        var weekDisplay = document.getElementById('weekDisplay');
+        var patternName = getPatternName(currentPattern);
+        weekDisplay.textContent = 'هفته ' + patternName;
+    }
+
+    // ============================================================
+    // 8. مقداردهی اولیه
+    // ============================================================
+    function init() {
+        populateSectionSelect();
+        var firstSec = 'صندوق';
+        document.getElementById('sectionSelect').value = firstSec;
+
+        currentPattern = patternA;
+        currentTab = 'tabA';
+        document.querySelector('.tab-btn[data-tab="tabA"]')?.classList.add('active');
+        document.getElementById('tabA')?.classList.add('active');
+        document.getElementById('tabB')?.classList.remove('active');
+
+        renderCurrentView();
+
+        document.getElementById('sectionSelect').addEventListener('change', function() {
+            renderCurrentView();
+        });
+
+        var tabs = document.querySelectorAll('.tab-btn');
+        tabs.forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                tabs.forEach(function(b) { b.classList.remove('active'); });
+                this.classList.add('active');
+
+                var target = this.dataset.tab;
+                currentTab = target;
+                currentPattern = target === 'tabA' ? patternA : patternB;
+
+                document.getElementById('tabA')?.classList.toggle('active', target === 'tabA');
+                document.getElementById('tabB')?.classList.toggle('active', target === 'tabB');
+
+                renderCurrentView();
+            });
+        });
+    }
+
+    init();
+</script>
+</body>
+</html>
