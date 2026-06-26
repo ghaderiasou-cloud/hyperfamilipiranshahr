@@ -602,11 +602,14 @@
     };
 
     // ============================================================
-    // 3. تابع انتقال خودکار FULL و OFF
+    // 3. تابع انتقال خودکار FULL و OFF (دوشنبه→جمعه، سه‌شنبه→دوشنبه)
     // ============================================================
-    function transferFullOffToFriSat(pattern) {
+    function transferFullOff(pattern) {
         var newPattern = JSON.parse(JSON.stringify(pattern));
         for (var person in newPattern) {
+            // مدیریت را از انتقال مستثنی می‌کنیم
+            if (person === 'قادری' || person === 'حمزه') continue;
+            
             var isChangeable = false;
             for (var s = 0; s < changeableSections.length; s++) {
                 var sec = changeableSections[s];
@@ -619,6 +622,7 @@
 
             var shifts = newPattern[person];
             
+            // 1. انتقال از دوشنبه (index 2) به جمعه (index 6)
             var mondayShift = shifts[2];
             if (mondayShift === 'FULL' || mondayShift === 'OFF') {
                 if (shifts[6] === 'FULL' || shifts[6] === 'OFF') {
@@ -632,16 +636,17 @@
                 }
             }
             
+            // 2. انتقال از سه‌شنبه (index 3) به دوشنبه (index 2)
             var tuesdayShift = shifts[3];
             if (tuesdayShift === 'FULL' || tuesdayShift === 'OFF') {
-                if (shifts[0] === 'FULL' || shifts[0] === 'OFF') {
-                    var tempSat = shifts[0];
-                    shifts[0] = tuesdayShift;
-                    shifts[3] = tempSat;
+                if (shifts[2] === 'FULL' || shifts[2] === 'OFF') {
+                    var tempMon = shifts[2];
+                    shifts[2] = tuesdayShift;
+                    shifts[3] = tempMon;
                 } else {
-                    var tempSat2 = shifts[0];
-                    shifts[0] = tuesdayShift;
-                    shifts[3] = tempSat2;
+                    var tempMon2 = shifts[2];
+                    shifts[2] = tuesdayShift;
+                    shifts[3] = tempMon2;
                 }
             }
         }
@@ -651,8 +656,8 @@
     // ============================================================
     // 4. اعمال خودکار انتقال در هنگام بارگذاری
     // ============================================================
-    var patternA = transferFullOffToFriSat(originalPatternA);
-    var patternB = transferFullOffToFriSat(originalPatternB);
+    var patternA = transferFullOff(originalPatternA);
+    var patternB = transferFullOff(originalPatternB);
     var isChanged = true;
 
     // ============================================================
